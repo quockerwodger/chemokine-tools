@@ -4,6 +4,8 @@ Created on Tue Aug 15 14:26:47 2023
 
 @author: Josh
 """
+
+#Input values
 raw_seq = "APLLESQRSNSEEKANFCSTHNDEVYARFRLQMRVGVRHSPLYTPSNMCMLDIEDSVEDIEESTEKEYASTATGEAAGVNVSVALVGEGVSIPFSYIGLGFNPSLEDSYLYVNVSSRAPWVKQTSDLSANGGWGIKQVLEKELLAIQIGCDNQKFPEEPTTTPPSPVTTTLSSTTPDLNEENTENTPTTTGASVDRKRNPADIDFSLLVDPRCVTSVDLHVELRDACIDYKQESPLSLKGKYGDGELVKKEIKDVGKNHNMCSLNLNPGN"
 test_mutants = {67:['E', 'G', 'A', 'M'],
                 86:['V', 'G', 'A', 'S'],
@@ -18,6 +20,8 @@ seq_len = len(raw_seq)
 res_no = 0
 seq = []
 mutant_list = []
+
+#Creating mutants. Cutoff must be updated before running
 while res_no < seq_len:
     if (res_no+1) < 67:
         seq.append(raw_seq[(res_no)])
@@ -46,8 +50,7 @@ final_list = []
 for item in mutant_list:
     new_item = ''.join(item)
     final_list.append(new_item)
-#print(mutant_list)
-#print(final_list)
-with open('mutant_file_no_GA.txt', 'w') as f:
+
+with open('mutant_file.txt', 'w') as f:
     for line in final_list:
         f.write("%s\n" % line)

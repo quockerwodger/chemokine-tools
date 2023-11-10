@@ -1,0 +1,23 @@
+# FaceScan & MutantScan scripts for working with FoldX
+
+- Requires foldx_4.exe to be installed & rotabase.txt file if wanting to actually run simulations
+
+### Outline ###
+
+These scripts exist to generate mutant files that can be input into the BuildModel function of FoldX
+
+## FaceScan ##
+- Objective is to generate series of single mutants at interface, where each interface residue from one chain of complex (coded as chain 'A', can be relabeled to be any chain) is systematically mutated to each of the 20 amino acids
+- Approach
+	- When running script will be prompted to input pdb. The full name must be provided (including .pdb) and the file must be in the working directory from which python is being run
+	- Before running, may need to update some terms: chain IDs, which chain is being mutated, any residues that need to be excluded
+	- Will output 'mutant_file.txt', a text file containing all sequences with the WT as the first line
+
+## MutantScan ##
+- Objective is to take an input set of desired mutations and generate every possible combination of them
+- Approach
+	- Before running, script will need to be modified to include correct:
+		raw_seq (the wild type sequence)
+		test_mutants (the desired mutations)
+		cutoff within loop to create mutants (set to lowest res_num of desired mutations. E.g. if mutating residues 45, 48, & 69, cutoff needs to be 45)
+	- Will output 'mutant_file.txt', a text file containing all sequences with the WT as the first line

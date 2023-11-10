@@ -10,7 +10,8 @@ warnings.simplefilter('ignore', BiopythonWarning)
 
 parser = PDBParser()
 
-pdb_list = open(sys.argv[1]).read().splitlines()
+input_file = input("Provide the file list: ")
+pdb_list = open(input_file).read().splitlines()
 distance_table = pd.DataFrame(columns = ['Res_A', 'Res_B', 'Distance', 'Frame'])
 
 for item in pdb_list:

@@ -1,0 +1,21 @@
+## Interface Finder ##
+
+This simple script will take a series of input structures, find the interface residues in each, and return a spreadsheet with them
+
+Workflow
+- When analysing an MD trajectory, I created a seperate pdb file for each frame within VMD with the following tcl script:
+	set sel [atomselect top "all"]
+	set num_frames [molinfo top get numframes]
+	for {set i 0} {$i < $num_frames} {incr i} {
+		$sel frame $i
+		set outfile "frame_$i.pdb"
+		$sel writepdb $outfile
+		}
+	$sel delete
+- You need to create a text file containing the names of each pdb being analysed. The easiest way to do this is to have them all within a single directory, navigate to here within the console and run the command
+	dir /s/b/o:gn > filenames.txt
+- The resulting file will need to be trimmed a bit to shorten the directory trees (only the directory containing the pdb's is required) and remove 'filenames.txt' from the list
+- When running the program, will be prompted to provide the file list, which will be the text file with all pdbs
+- The script will open each item, find all residue-residue contacts that are < 8.0 A and add them to a table, along with their distance for that particular frame
+- This table is output as 'distance table.csv'
+	- As this is simply outputting all residue-residue pairs it can find, several residues will be duplicated. It is up to you to process that, I did it within R.
