@@ -1,0 +1,65 @@
+# CIWI software copyright 2023 Amy Scadden of University of Otago
+
+# Built in python 3.9.12, this needs to be installed in order to run this program
+
+
+# Within command shell, navigate to directory of interest. The ciwi_consensus_finder.py file, properties.txt, and input_sequences.txt, target_sequence files must all be within this directory
+
+# Amino acid property table #
+	# Based on https://www.imgt.org/IMGTeducation/Aide-memoire/_UK/aminoacids/IMGTclasses.html
+	# Guide to properties used
+		# size (in A^3) = tiny (60-90), small (108-117), medium (138-154), large (162-174), huge (189-228)
+		# hydro = hydropathy class
+		# side = side chain type
+		# polar = side chain polarity
+		# res = one letter amino acid code
+
+# CIWI Consensus Finder #
+	# This script will take input sequences of the same length and find the consensus amongst them based on an amino acid property table.
+		# The input_sequences file should be formatted to have each sequence on a seperate line. Don't have names for each sequence. See sample file (CKBP_cluster_one.txt) for guide
+		# If there is enough of a demand for dealing with sequences of differing length, I may try and update the script
+
+	# Run command
+		python ciwi_consensus_finder.py input_sequences.txt negative_sequences.txt
+			# negative_sequences.txt is an optional input, will allow the user to generate a negative consensus sequence (for proteins that fail condition, e.g. non-binders) which can then be subtracted from the final consensus sequence to produce a positive consensus sequence
+			# This will produce two .csv files: consensus_sequence.csv with a table containing the consensus (>50% of sequences) for the different variables within the property table and consensus_scores.csv with a table in the same layout that lists the proportion of sequences containing the consensus property. 
+			# If negative sequences are provided, an additional four tables will be generated with the scores & tables for the negative & positive consensus sequences
+
+# CIWI Key Finder #
+	# This script will take input sequences of the same length from both positives & negatives (e.g. binders & non-binders) and compare them to a previously generated consensus sequence
+		# Using this, the script will output four tables:
+			# All raw data.csv
+				# A table with all the sequences matched to their properties
+			# All raw scores.csv
+				# The raw data table, but with a '1' where the property matches the consensus table, and a '0' where it differs or the consensus table has an 'X'
+			# Calculated means per consensus position.csv
+				# For each input protein, the mean of the scores across each property type is calculated for each position in the consensus sequence
+			# Calculated means per variable.csv
+				# For each input protein, the mean of the scores across each consensus position is calculated for each variable
+
+	# Run command
+		python ciwi_key_finder.py input_sequences.txt
+		# input_sequences should be in the format
+			'protein name'	'sequence'
+
+	# User will be asked 'What consensus sequence would you like to use?'
+		# Three possible answers:
+			general = general consensus sequence
+			negative = negative consensus sequence 
+			positive = positive consensus sequence
+
+	# The Key Finder is intended for help in finding which parts of the consensus sequence are useful for distinguishing the positives & negatives
+
+# CIWI R script #
+	# This is an R script that will generate histograms, density plots, and boxplots for all means generated, as well as for the raw scores table
+	# User will need to change file & path names within the script in order for it to work properly
+	# Will also need to add a column/row to each csv table specifying if a given value is for a positive or a negative (will have to update terms within R script to match)
+	# Using this information, the user will need to modify their consensus table to include only those properties/positions identified as 'key' for distinguishing positives from negatives. All other values should be 'X'
+	
+# CIWI matcher #
+	# The final python script
+	# Run command
+		python ciwi_matcher.py input_sequences.txt input_consensus.csv
+		# Input sequences should be in the format
+			'protein name'	'sequence'
+		# Input consensus should be formatted the same as the consensus outputs from previous scripts

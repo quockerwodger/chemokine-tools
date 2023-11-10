@@ -1,0 +1,4 @@
+Variable	A	C	D	E	F	G	H	I	K	L	M	N	P	Q	R	S	T	V	W	Y
+Siz	sma	sma	sma	med	lar	sma	med	lar	lar	lar	lar	sma	sma	med	lar	sma	sma	med	lar	lar
+Pol	non	pol	aci	aci	non	non	bas	non	bas	non	non	pol	non	pol	pol	pol	pol	non	pol	pol
+Res	A	C	D	E	F	G	H	I	K	L	M	N	P	Q	R	S	T	V	W	Y
