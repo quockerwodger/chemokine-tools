@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Thu Oct  5 14:12:24 2023
 
-@author: Josh
-"""
 import numpy as np
 import pandas as pd
 from collections import Counter
@@ -344,14 +340,14 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from sklearn.neural_network import MLPClassifier
 from sklearn.neural_network import MLPRegressor
-from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import cross_val_score, StratifiedKFold
 from sklearn.metrics import mean_squared_error
 
 # Preparing data
 binding_types = ['Binder', 'Non-binder']
 binding_status = []
 for index, row in all_data.iterrows():
-    if index < 20:
+    if index < 21:
         value = 'Binder'
     else:
         value = 'Non-binder'
@@ -375,15 +371,15 @@ print(mean_features)
 
 #Model 1
 clf1 = MLPClassifier(hidden_layer_sizes = (1000,), max_iter = int(1e19), activation = 'logistic', solver = 'adam', alpha = 0.01, learning_rate_init = 0.0001)
-train1, test1, train_labels1, test_labels1 = train_test_split(mean_features, binding_status, test_size = 0.25, random_state = 42)
+train1, test1, train_labels1, test_labels1 = train_test_split(mean_features, binding_status, test_size = 0.25, random_state = 42, stratify = binding_status)
 model1 = clf1.fit(train1, train_labels1)
 preds1 = clf1.predict(test1)
 print(preds1)
 
 print(accuracy_score(test_labels1, preds1))
 
-#scores1 = cross_val_score(clf1, mean_features, binding_status, cv=20)
-#print(scores1.mean(), scores1.std())
+scores1 = cross_val_score(clf1, mean_features, binding_status, cv = StratifiedKFold(10, shuffle = True, random_state = 42))
+print(scores1.mean(), scores1.std())
 
 probs1 = model1.predict_proba(test1)
 
@@ -398,8 +394,8 @@ print(preds2)
 
 print(accuracy_score(test_labels2, preds2))
 
-#scores2 = cross_val_score(clf2, features, binding_status, cv=20)
-#print(scores2.mean(), scores2.std())
+scores2 = cross_val_score(clf2, features, binding_status, cv = StratifiedKFold(10, shuffle = True, random_state = 42))
+print(scores2.mean(), scores2.std())
 
 #Saving models
 import pickle

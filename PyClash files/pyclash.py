@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-PyClash script created by Josh Scadden 2023
-"""
 
 from Bio.PDB import *
 import numpy as np

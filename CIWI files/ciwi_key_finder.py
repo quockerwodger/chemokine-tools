@@ -1,5 +1,3 @@
-# CIWI created 2023 by Amy Scadden while a PhD student at the University of Otago
-
 # load required modules
 
 import csv

@@ -1,10 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Fri Aug 11 14:24:29 2023
-
-@author: Josh
-"""
-
 
 from Bio.PDB import *
 from Bio import BiopythonWarning

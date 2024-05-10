@@ -3,7 +3,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from sklearn.neural_network import MLPClassifier
-from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import cross_val_score, StratifiedKFold
 
 binder_input = pd.read_csv("binders.txt", sep = "\t", index_col = 'chemokine')
 binder_seq = binder_input['sequence'].tolist()
@@ -65,7 +65,7 @@ all_data = all_data.reset_index()
 binding_types = ['Binder', 'Non-binder']
 binding_status = []
 for index, row in all_data.iterrows():
-    if index < 20:
+    if index < 21:
         value = 'Binder'
     else:
         value = 'Non-binder'
@@ -81,15 +81,16 @@ for index, row in all_data.iterrows():
     new_array = (row_array[1:]).astype(float)
     features.append(new_array)
 print(features)
-
+'''
 kd_all_files = open("all_kd.txt").readlines() #opens file used as argument
 kd_all_array = np.array(kd_all_files) #converts file to array
 all_kd = [] #creates empty list
 for sub in kd_all_array: #takes each sub (value?) in the array and appends it to the empty list, removing the \n in the process
 	all_kd.append(float(sub.replace("\n", "")))
 print(all_kd)
+'''
 # Training & testing the model 
-train3, test3, train_labels3, test_labels3 = train_test_split(features, binding_status, test_size = 0.25, random_state = 0)
+train3, test3, train_labels3, test_labels3 = train_test_split(features, binding_status, test_size = 0.25, random_state = 42, stratify = binding_status)
 
 clf3 = MLPClassifier(hidden_layer_sizes = (1000,), max_iter = int(1e19), activation = 'logistic', solver = 'adam', alpha = 0.01, learning_rate_init = 0.0001)
 print(clf3)
@@ -100,7 +101,7 @@ preds = clf3.predict(test3)
 print(preds)
 print(accuracy_score(test_labels3, preds))
 
-#scores = cross_val_score(clf3, features, binding_status, cv=20)
-#print(scores.mean(), scores.std())
+scores = cross_val_score(clf3, features, binding_status, cv = StratifiedKFold(10, shuffle = True, random_state = 42))
+print(scores.mean(), scores.std())
 import pickle
 pickle.dump(model, open('model3.sav', 'wb'))

@@ -1,5 +1,3 @@
-# CIWI software copyright 2023 Amy Scadden of University of Otago
-
 # Built in python 3.9.12, this needs to be installed in order to run this program
 
 
